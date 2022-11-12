@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+    <!-- 'head' tag contains metadata -->
+    <head>
+
+        <title>CN Mini Project</title>
+    
+    
+        <!-- javascript libraries     -->
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+        <!-- linking CSS file -->
+        <link rel="stylesheet" href="stylenew1.css" />
+    
+    </head>
+
+    <!-- class attribute is used by CSS and javascript to select and access specific elements -->
+    <body class="flex">
+        <div class="container">
+
+            <!-- form used to take input from user ( First Name , Last Name , Registration No.) -->
+            <form id="form1">
+                <h1>Simulating Cookie Communication</h1>
+                <div class="fname_1">
+                    <input type="text" id="fname" name="fname">
+                    <label>First Name</label>
+                </div>
+
+                <div class="lname_1">
+                    <input type="text" id="lname" name="lname">
+                    <label>Last Name</label>
+                </div>
+
+                <div class="regno_1">
+                    <input type="text" id="rno" name="rno">
+                    <label>Registration No : </label>
+                </div>
+
+                <input class ="L_btn" type="submit" value="Store as Cookie" >
+
+                <!-- if the button is clicked the function for removing cookie is invoked -->
+                <button type="button" class = "R_btn " id="removebutton" onclick="remCookie()">Remove Cookie</button>
+
+            </form>
+            
+            <div class="div">
+                <div class="line"></div>
+            </div>
+        </div>
+        
+        <!-- The <script> tag is used to embed a client-side script (JavaScript) -->
+        <script>
+
+            //function to remove each cookie
+            let remCookie=()=>
+            {
+                $.removeCookie("first_name", 
+                $('#fname').val());
+
+                $.removeCookie("last_name", 
+                $('#lname').val());
+
+                $.removeCookie("reg_no", 
+                $('#rno').val());
+            }
+
+            
+        </script>
+
+
+        <script>
+
+            // Asynchronous JavaScript and XML (AJAX) is a programming technique that utilizes JavaScript and 
+            // the XMLHTTPRequest object to exchange data between a web browser and a web server. 
+            $.ajax
+            ({
+
+                //JavaScript Object Notation is the most widely used data format for data interchange on the web
+                dataType: 'json',
+
+                //external api that gives the source ip address
+                url: 'http://api.hostip.info/get_json.php',
+            
+                //The success function indicates there is a response from the server
+                success: function(data) 
+                {
+                    var $ip = data['ip'],
+                        $city = data['city'],
+                        $countryCode = data['country_code'],
+                        $countryName = data['country_name'];
+                    
+                    //used to log the ip into the console
+                    console.log($ip);
+
+                    // '.cookie' is a class in the jquery library
+                    $.cookie('source_ip', $ip, { expires: 7 });
+                    
+                    //executed when the form button is pressed
+                    //the "#form1" indicates the ID of the form used to take inputs
+                    $("#form1").submit(function( event ) 
+                    {
+                        //creating cookies with their key,value and other fields set
+                        
+                        $.cookie('first_name', $('#fname').val(),{expires: 10, secure: true });
+                        $.cookie('last_name', $('#lname').val(), { expires: 4 }); 
+                        $.cookie('reg_no',$('#rno').val(),{ expires: 7});   
+
+                        //used to prevent a refresh
+                        event.preventDefault();
+        
+                    });
+                }
+            });
+
+        </script>
+
+    </body>
+
+ </html>
